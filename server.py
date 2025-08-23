@@ -26,7 +26,3 @@ async def websocket_endpoint(websocket: WebSocket):
 async def get():
     with open("index.html", "r", encoding="utf-8") as f:
         return HTMLResponse(f.read())
-
-
-if __name__ == "__main__":
-    uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
