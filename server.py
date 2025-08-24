@@ -1,21 +1,27 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
-import uvicorn
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
 
 app = FastAPI()
 
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+templates = Jinja2Templates(directory="templates")
 
 clients = []
 
 
 @app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
+async def websocket_endpoint(
+    websocket: WebSocket
+) -> None:
     await websocket.accept()
     clients.append(websocket)
     try:
         while True:
             data = await websocket.receive_text()
-            # Широковещательная рассылка
             for client in clients:
                 await client.send_text(data)
     except WebSocketDisconnect:
@@ -23,6 +29,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
 
 @app.get("/")
-async def get():
-    with open("index.html", "r", encoding="utf-8") as f:
-        return HTMLResponse(f.read())
+async def get(
+    request: Request
+) -> HTMLResponse:
+    return templates.TemplateResponse("index.html", {"request": request})

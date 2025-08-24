@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Простой чат</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
+</head>
+<body>
+    <h2>Глобальный чат</h2>
+    <div id="chat"></div>
+    <input id="messageInput" type="text" placeholder="Введите сообщение..." />
+    <button id="sendBtn">Отправить</button>
+
+    <script src="{{ url_for('static', path='scripts/main.js') }}"></script>
+</body>
+</html>
