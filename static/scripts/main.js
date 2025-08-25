@@ -1,5 +1,7 @@
+let connectionId = Date.now();
+
 const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-const ws = new WebSocket(protocol + "//" + location.host + "/ws");
+const ws = new WebSocket(protocol + "//" + location.host + "/ws/" + connectionId);
 
 ws.onmessage = function(event) {
     let chat = document.getElementById("chat");
@@ -15,13 +17,6 @@ document.getElementById("sendBtn").onclick = function() {
         ws.send(input.value);
         input.value = "";
     }
-};
-
-document.getElementById("sendBtn").onclick = function() {
-    let input = document.getElementById("messageInput");
-    let text = input.value;
-    console.log(text);
-    input.value = "";
 };
 
 document.getElementById("messageInput").addEventListener("keypress", function(e) {
